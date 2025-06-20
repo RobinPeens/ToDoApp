@@ -202,10 +202,6 @@ namespace ToDoApp.DAL
         {
             using var db = contextProvider.CreateDbContext();
 
-            var tmps = db.ToDos
-                .Where(a => a.StatusId == (int)StatusType.Pending && a.DueDate <= DateTime.Now)
-                .ToList();
-
             var toDos = db.ToDos
                 .Where(a => a.StatusId == (int)StatusType.Pending && a.DueDate <= DateTime.Now)
                 .AsAsyncEnumerable();
