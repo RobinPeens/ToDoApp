@@ -1,0 +1,42 @@
+﻿<div class="ViewToDo">
+    <h2>View ToDo</h2>
+    <EditForm Model="Model" OnSubmit="Submit" FormName="ViewToDo">
+        <div>
+            <div>
+                <span style="width: 120px; display: inline-block;">Title:</span>
+                <span>@Model!.Title</span>
+            </div>
+            <div>
+                <span style="width: 120px; display: inline-block;">Description:</span>
+                <span>@Model!.Description</span>
+            </div>
+            <div>
+                <span style="width: 120px; display: inline-block;">Notes:</span>
+                @if (Model.Status != Models.StatusType.Completed)
+                {
+                    <InputTextArea @bind-Value="Model!.Notes" />
+                    @if (!IsValid)
+                    {
+                        <span>Notes are required to complete a ToDo task.</span>
+                    }
+                }
+                else
+                {
+                    <span>@Model!.Notes</span>
+                }
+            </div>
+            <div>
+                <span style="width: 120px; display: inline-block;">Due Date:</span>
+                <span>@Model!.DueDate.ToNiceString()</span>
+            </div>
+        </div>
+        <div>
+            @if (Model.Status != Models.StatusType.Completed)
+            {
+                <button type="submit">Complete</button>
+                <button @onclick="Cancel">Cancel</button>
+            }
+            <button @onclick="Back">Back</button>
+        </div>
+    </EditForm>
+</div>

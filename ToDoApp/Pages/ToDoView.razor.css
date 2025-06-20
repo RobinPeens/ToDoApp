@@ -1,0 +1,33 @@
+﻿.todo {
+    background-color: blue;
+    color: white;
+}
+
+.todo_overdue {
+    background-color: red;
+    color: white;
+}
+
+.todo_canceled {
+    background-color: orange;
+    color: white;
+}
+
+.todo_complete {
+    background-color: green;
+    color: white;
+}
+
+.todo_deleted {
+    background-color: black;
+    color: white;
+}
+
+.todo_button {
+    cursor: pointer;
+}
+
+.ModelTitle {
+    width: 120px;
+    display: inline-block;
+}

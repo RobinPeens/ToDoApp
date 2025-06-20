@@ -1,0 +1,91 @@
+﻿@page "/ToDoView"
+@using ToDoApp.Models
+@using ToDoApp.Components
+
+<PageTitle>ToDo List</PageTitle>
+
+<h1>ToDo List</h1>
+
+@if (ShowAddToDo)
+{
+    <CreateToDo OnSubmit="Refresh" />
+    <br />
+}
+else
+{
+    <button @onclick=@(() => AddToDo())>Add ToDo</button>
+}
+
+@if (ShowViewToDo)
+{
+    <ViewToDo OnSubmit="Refresh" ToDoId="ViewToDoId" />
+    <br />
+}
+else
+{
+
+    <div class="filter">
+        <br />
+        <span>Status Filter</span>
+        <InputSelect @bind-Value="FilterStatus"
+                     @bind-Value:after="Refresh">
+
+            <option value="">All</option>
+            @foreach (var status in Enum.GetValues(typeof(StatusType)))
+            {
+                <option value="@status">@status.ToString()</option>
+            }
+
+        </InputSelect>
+        @if (FilterStatus == null)
+        {
+            <br />
+            <span>Include Deleted</span>
+            <InputCheckbox @bind-Value="IncludeDeleted"
+                           @bind-Value:after="Refresh" />
+        }
+    </div>
+
+    <br />
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Due Date</th>
+                <th>Created Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (toDos != null)
+            {
+                @foreach (var toDo in toDos)
+                {
+                    <tr>
+                        <td>@toDo.Title - @toDo.ToDoId</td>
+                        <td>@toDo.DueDate.ToNiceString()</td>
+                        <td>@toDo.CreatedDate.ToNiceString()</td>
+                        <td class="@GetRowClass(toDo)">@toDo.Status.ToString()</td>
+                        <td>
+                            @if (toDo.Status == StatusType.Pending || toDo.Status == StatusType.Overdue || toDo.Status == StatusType.Completed)
+                            {
+                                @if (toDo.Status == StatusType.Pending || toDo.Status == StatusType.Overdue)
+                                {
+                                    <button class="todo_button" @onclick=@(() => CancelToDo(toDo.ToDoId))>Cancel</button>
+                                    <button class="todo_button" @onclick=@(() => DeleteToDo(toDo.ToDoId))>Delete</button>
+                                }
+                                <button class="todo_button" @onclick=@(() => ViewToDo(toDo.ToDoId))>View</button>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <p><em>Loading...</em></p>
+            }
+        </tbody>
+    </table>
+}

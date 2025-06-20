@@ -1,0 +1,23 @@
+﻿<div class="CreateToDoView">
+    <h2>Add ToDo</h2>
+    <EditForm Model="Model" OnSubmit="Submit" FormName="CreateNewToDo">
+        <div>
+            <div>
+                <span style="width: 120px; display: inline-block;">Title:</span>
+                <span><InputText @bind-Value="Model!.Title" /></span>
+            </div>
+            <div>
+                <span style="width: 120px; display: inline-block;">Description:</span>
+                <span><InputText @bind-Value="Model!.Description" /></span>
+            </div>
+            <div>
+                <span style="width: 120px; display: inline-block;">Due Date:</span>
+                <span><InputDate Type="InputDateType.DateTimeLocal" @bind-Value="Model!.DueDate" /></span>
+            </div>
+        </div>
+        <div>
+            <button type="submit">Submit</button>
+            <button @onclick="Cancel">Cancel</button>
+        </div>
+    </EditForm>
+</div>

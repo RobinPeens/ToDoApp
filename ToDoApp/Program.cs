@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using ToDoApp.DAL;
-using ToDoApp.Data;
 using ToDoApp.DataContext;
 using ToDoApp.Mapper;
 using ToDoApp.Services;
 using Microsoft.EntityFrameworkCore;
+using ToDoApp.Workers;
 
 namespace ToDoApp
 {
@@ -14,15 +14,6 @@ namespace ToDoApp
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
-            IConfiguration config = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", false, false)
-                //.AddJsonFile($"appsettings.{envLower}.json", true, true)
-                .AddEnvironmentVariables()
-                .Build();
-
-            builder.Services.AddSingleton<IConfiguration>(config);
 
             // Add services to the container.
             builder.Services.AddRazorPages();
@@ -39,7 +30,10 @@ namespace ToDoApp
 
             // Services
             builder.Services.AddSingleton<IToDoService, ToDoService>();
-            builder.Services.AddSingleton<WeatherForecastService>();
+            builder.Services.AddSingleton<IDataUpdatedService, DataUpdatedService>();
+
+            // Worker
+            builder.Services.AddHostedService<BackgroundWorker>();
 
             var app = builder.Build();
 
